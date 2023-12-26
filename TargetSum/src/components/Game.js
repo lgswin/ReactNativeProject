@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {View, Text, Button, StyleSheet} from 'react-native';
+import {View, Text, Button, StyleSheet, Dimensions} from 'react-native';
 
 import RandomNumber from './RandomNumber';
 import shuffle from 'lodash.shuffle';
+
+const screenHeight = Dimensions.get('window').height;
 
 class Game extends React.Component {
   static propTypes = {
@@ -68,7 +70,9 @@ class Game extends React.Component {
     ) {
       this.gameStatus = this.getGameStatus(nextState);
       console.log(this.gameStatus);
+      this.gameStatus = 'PLAYING';
       if (this.gameState !== 'PLAYING') {
+        console.log('clear??');
         clearInterval(this.intervalId);
       }
     }
@@ -114,16 +118,25 @@ class Game extends React.Component {
           ))}
         </View>
         {this.gameStatus !== 'PLAYING' && (
+          <Text style={styles.centerbig}>{gameStatus}</Text>
+        )}
+
+        {this.gameStatus !== 'PLAYING' && (
           <Button title="Play again" onPress={this.props.onPlayAgain} />
         )}
-        <Text>{gameStatus}</Text>
-        <Text>{this.state.remainingSeconds}</Text>
+        {this.gameStatus === 'PLAYING' && (
+          <Text style={styles.centerbig}>{this.state.remainingSeconds}</Text>
+        )}
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  centerbig: {
+    fontSize: 40,
+    textAlign: 'center',
+  },
   container: {
     backgroundColor: 'yellow',
     flex: 1,
@@ -136,7 +149,7 @@ const styles = StyleSheet.create({
 
   target: {
     fontSize: 40,
-    marginTop: 100,
+    marginTop: 80,
     margin: 20,
     backgroundColor: '#bbb',
     textAlign: 'center',
@@ -146,10 +159,10 @@ const styles = StyleSheet.create({
   },
 
   randomContainer: {
-    flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
+    height: screenHeight * 0.5,
   },
 
   STATUS_PLAYING: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
+import {View, TouchableHighlight, Text, StyleSheet} from 'react-native';
 
 class RandomNumber extends React.Component {
   static propTyeps = {
@@ -18,23 +18,27 @@ class RandomNumber extends React.Component {
 
   render() {
     return (
-      <TouchableOpacity onPress={this.handlePress}>
+      <TouchableHighlight onPress={this.handlePress}>
         <Text style={[styles.random, this.props.isDisabled && styles.disabled]}>
           {this.props.number}
         </Text>
-      </TouchableOpacity>
+      </TouchableHighlight>
     );
   }
 }
 
 const styles = StyleSheet.create({
   random: {
-    backgroundColor: '#999',
     width: 100,
+    height: 50,
+    backgroundColor: '#bbb',
     marginHorizontal: 15,
     marginVertical: 25,
+    lineHeight: 50,
     fontSize: 35,
     textAlign: 'center',
+    borderWidth: 2,
+    borderRadius: 10,
   },
 
   disabled: {
