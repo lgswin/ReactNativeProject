@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, Button, StyleSheet} from 'react-native';
 
 import RandomNumber from './RandomNumber';
+import shuffle from 'lodash.shuffle';
 
 class Game extends React.Component {
   static propTypes = {
     randomNumberCount: PropTypes.number.isRequired,
     initialSeconds: PropTypes.number.isRequired,
+    onPlayAgain: PropTypes.func.isRequired,
   };
 
   state = {
@@ -25,7 +27,10 @@ class Game extends React.Component {
     .slice(0, this.props.randomNumberCount - 2)
     .reduce((acc, curr) => acc + curr, 0);
 
+  shuffledRandomNumbers = shuffle(this.randomNumbers);
+
   componentDidMount() {
+    console.log('componentDidMount');
     this.intervalId = setInterval(() => {
       this.setState(
         prevState => {
@@ -41,6 +46,7 @@ class Game extends React.Component {
   }
 
   UNSAFE_componentWillUnmount() {
+    console.log('componentWillUnmount');
     clearInterval(this.intervalId);
   }
 
@@ -55,6 +61,7 @@ class Game extends React.Component {
   };
 
   UNSAFE_componentWillUpdate(nextProps, nextState) {
+    console.log('componentWillUpdate');
     if (
       nextState.selectedIds !== this.state.selectedIds ||
       nextState.remainingSeconds === 0
@@ -69,7 +76,7 @@ class Game extends React.Component {
 
   getGameStatus = nextState => {
     const sumSelected = nextState.selectedIds.reduce((acc, curr) => {
-      return acc + this.randomNumbers[curr];
+      return acc + this.shuffledRandomNumbers[curr];
     }, 0);
     if (nextState.remainingSeconds === 0) {
       return 'LOST';
@@ -86,6 +93,7 @@ class Game extends React.Component {
   };
 
   render() {
+    console.log('game render');
     const gameStatus = this.gameStatus;
     return (
       <View style={styles.container}>
@@ -93,7 +101,7 @@ class Game extends React.Component {
           {this.target}
         </Text>
         <View style={styles.randomContainer}>
-          {this.randomNumbers.map((randomNumber, index) => (
+          {this.shuffledRandomNumbers.map((randomNumber, index) => (
             <RandomNumber
               key={index}
               id={index}
@@ -105,6 +113,9 @@ class Game extends React.Component {
             />
           ))}
         </View>
+        {this.gameStatus !== 'PLAYING' && (
+          <Button title="Play again" onPress={this.props.onPlayAgain} />
+        )}
         <Text>{gameStatus}</Text>
         <Text>{this.state.remainingSeconds}</Text>
       </View>
