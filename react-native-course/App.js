@@ -7,6 +7,7 @@ import {
   Button,
   ScrollView,
   FlatList,
+  Pressable,
 } from "react-native";
 import MyButton from "./component/button";
 
@@ -22,11 +23,20 @@ export default function App() {
     if (value !== "") {
       setListOfNotes((currentNotes) => [...currentNotes, value]);
     }
+    setValue("");
   }
 
   function handleClear() {
     setListOfNotes([]);
     setValue("");
+  }
+
+  function handleRemoveItem(currentIndex) {
+    let cpyListOfNotes = [...listOfNotes];
+    cpyListOfNotes = cpyListOfNotes.filter(
+      (_, index) => currentIndex !== index
+    ); // filter returns a new array containing only that pass this test.
+    setListOfNotes(cpyListOfNotes);
   }
 
   return (
@@ -43,6 +53,7 @@ export default function App() {
             onChangeText={handleChangeText}
             style={styles.input}
             placeholder="Add your note here"
+            value={value}
           />
           <MyButton onPress={handleOnPressButton} title="Add Note" />
           <MyButton onPress={handleClear} title="Clear" />
@@ -60,7 +71,9 @@ export default function App() {
           <FlatList
             data={listOfNotes}
             renderItem={(itemData) => (
-              <Text style={styles.listItem}>{itemData.item}</Text>
+              <Pressable onPress={() => handleRemoveItem(itemData.index)}>
+                <Text style={styles.listItem}>{itemData.item}</Text>
+              </Pressable>
             )}
           />
         </View>
