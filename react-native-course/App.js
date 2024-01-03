@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Button,
   ScrollView,
+  FlatList,
 } from "react-native";
 import MyButton from "./component/button";
 
@@ -48,13 +49,20 @@ export default function App() {
         </View>
 
         <View style={styles.listContainer}>
-          <ScrollView>
+          {/* <ScrollView>
             {listOfNotes.map((item, index) => (
               <Text style={styles.listItem} key={`item${index}`}>
                 {item}
               </Text>
             ))}
-          </ScrollView>
+          </ScrollView> */}
+          {/* ScrollView renders all list at once while FlatList renders only renderItem */}
+          <FlatList
+            data={listOfNotes}
+            renderItem={(itemData) => (
+              <Text style={styles.listItem}>{itemData.item}</Text>
+            )}
+          />
         </View>
       </View>
     </View>
