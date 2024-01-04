@@ -9,7 +9,8 @@ import {
   FlatList,
   Pressable,
 } from "react-native";
-import MyButton from "./component/button";
+import MyButton from "./components/button";
+import ApiCall from "./components/apicall";
 
 export default function App() {
   const [value, setValue] = useState("");
@@ -78,6 +79,9 @@ export default function App() {
           />
         </View>
       </View>
+      <View style={styles.apiContainer}>
+        <ApiCall />
+      </View>
     </View>
   );
 }
@@ -129,5 +133,8 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 20,
     width: 400,
+  },
+  apiContainer: {
+    flex: 2,
   },
 });
