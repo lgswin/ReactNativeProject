@@ -19,17 +19,20 @@ export default function ProductListItem({ title, onPress, bgColor }) {
 const styles = StyleSheet.create({
   productItemContainer: {
     flex: 1,
-    margin: 16,
+    margin: 5,
     height: 160,
-    borderRadius: 8,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#355070",
   },
 
   pressableView: {
     flex: 1,
+    borderRadius: 10,
   },
   productItemInnerContainer: {
     flex: 1,
-    padding: 15,
+    padding: 10,
     justifyContent: "center",
     alignItems: "center",
   },

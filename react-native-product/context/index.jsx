@@ -60,7 +60,7 @@ const ProductContext = ({ children }) => {
 
     getProductsFromApi();
   }, []);
-
+  console.log(products);
   return (
     <Context.Provider
       value={{

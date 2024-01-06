@@ -10,13 +10,14 @@ const MyButton = ({ onPress, title }) => (
 const styles = StyleSheet.create({
   button: {
     alignItems: "center",
-    backgroundColor: "black",
+    backgroundColor: "#00bbf9",
     padding: 10,
     marginLeft: 1,
+    borderRadius: 6,
   },
   text: {
-    fontSize: 16,
-    color: "white",
+    fontSize: 12,
+    color: "#03045e",
   },
 });
 

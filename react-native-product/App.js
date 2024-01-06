@@ -44,7 +44,7 @@ export default function App() {
                 backgroundColor: "#fff",
               },
               contentStyle: {
-                backgroundColor: "#555555",
+                backgroundColor: "#fff",
               },
             }}
           >

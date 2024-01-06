@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   reasonTextInput: {
+    width: 150,
     borderRadius: 1,
     borderWidth: 1,
     padding: 10,
