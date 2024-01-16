@@ -16,7 +16,7 @@ function BottomTabs() {
     <Tabs.Navigator>
       <Tabs.Screen
         options={{
-          title: "Product List",
+          title: "Products",
         }}
         name="ProductListing"
         component={ProductListing}
