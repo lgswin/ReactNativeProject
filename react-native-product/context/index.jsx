@@ -13,6 +13,14 @@ const ProductContext = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [favoriteItems, setFavoriteItems] = useState([]);
 
+  const removeFavorites = (productId) => {
+    let cpyFavoriteItems = [...favoriteItems];
+    const index = cpyFavoriteItems.findIndex((item) => item.id === productId);
+    if (index === -1) return;
+
+    cpyFavoriteItems.filter((item) => item.id !== productId);
+    setFavoriteItems(cpyFavoriteItems);
+  };
   const addToFavorites = (productId, reason) => {
     let cpyFavoriteItems = [...favoriteItems];
     const index = cpyFavoriteItems.findIndex((item) => item.id === productId);
@@ -67,6 +75,7 @@ const ProductContext = ({ children }) => {
         products,
         loading,
         addToFavorites,
+        removeFavorites,
         favoriteItems,
         handleRemoveFavorites,
       }}

@@ -18,7 +18,8 @@ export default function ProductDetails() {
   const navigation = useNavigation();
   const { productId } = route.params;
 
-  const { addToFavorites, favoriteItems } = useContext(Context);
+  const { addToFavorites, removeFavorites, favoriteItems } =
+    useContext(Context);
 
   const [loading, setLoading] = useState(false);
   const [productDetailsdata, setProductDetailsdata] = useState([]);
@@ -29,6 +30,14 @@ export default function ProductDetails() {
     favoriteItems && favoriteItems.length > 0
       ? favoriteItems.filter((item) => item.id === productId)
       : false;
+
+  function addOrRemoveFavorites(isAdd, productId) {
+    if (isAdd) {
+      addToFavorites(productId, "reason");
+    } else {
+      removeFavorites(productId);
+    }
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -50,11 +59,16 @@ export default function ProductDetails() {
       headerRight: () => {
         return (
           <MyButton
-            onPress={() => setModalVisible(true)}
+            onPress={() =>
+              addOrRemoveFavorites(
+                isCurrentItemIsPresentInFavoriteItemsArray.length > 0,
+                productId
+              )
+            }
             title={
               isCurrentItemIsPresentInFavoriteItemsArray &&
               isCurrentItemIsPresentInFavoriteItemsArray.length > 0
-                ? "Update Favorites"
+                ? "Delete Favorites"
                 : "Add Favorites"
             }
           />
@@ -96,7 +110,7 @@ export default function ProductDetails() {
               <Pressable
                 style={[styles.button, styles.buttonOpen]}
                 onPress={() => {
-                  addToFavorites(productId, reason);
+                  addToFavorites(productId, "reason");
                   setModalVisible(!modalVisible);
                 }}
               >
