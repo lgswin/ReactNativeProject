@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, TextInput, Button, TouchableOpacity, Image, ActivityIndicator, Alert} from 'react-native';
+import {View, Text, StyleSheet, TextInput, Button, TouchableOpacity, Image, ActivityIndicator, Alert, KeyboardAvoidingView, ScrollView} from 'react-native';
 import React, { useEffect, useState } from 'react'
 import {app} from '../../firebaseConfig';
 import {getFirestore,getDocs,collection,addDoc} from 'firebase/firestore';
@@ -42,7 +42,7 @@ export default function AddPostScreen() {
           quality: 1,
         });
     
-        console.log(result);
+        //console.log(result);
     
         if (!result.canceled) {
           setImage(result.assets[0].uri);
@@ -77,93 +77,97 @@ export default function AddPostScreen() {
     }
 
     return (
-        <View className="p-10">
-            <Text className="text-[27px] font-bold">Add New Post</Text>
-            <Text className="text-[18px] text-grey-500 mb-5">Create New Post and Start Selling</Text>
-            <Formik
-                initialValues={{title:'',desc:'',address:'',price:'',image:'',userName:'',userEmail:'',userImage:""}}
-                onSubmit={value=>onSubmitMethod(value)}
-                validate={(values)=>{
-                    const errors={}
-                    if(!values.title)
-                    {
-                      console.log("title is not present");
-                      //ToastAndroid.show("title must be there", ToastAndroid.SHORT)
-                      errors.name="Title must be there";
-                    }
-                    return errors
-                }}
-            >
-                {({handleChange,handleBlur,handleSubmit,values,setFieldValue})=>(
-                    <View>
-                        <TouchableOpacity onPress={pickImage}>
-                        {image?
-                        <Image source={{uri:image}} style={{width:100,height:100,borderRadius:15}} />
-                        :
-                        <Image source={require('./../../assets/images/placeholder.png')} 
-                        style={{width:100,height:100,borderRadius:15}}
-                        />
+        <KeyboardAvoidingView>
+        <ScrollView className="p-1 bg-white">
+            <View className="p-10">
+                <Text className="text-[27px] font-bold">Add New Post</Text>
+                <Text className="text-[18px] text-grey-500 mb-5">Create New Post and Start Selling</Text>
+                <Formik
+                    initialValues={{title:'',desc:'',address:'',price:'',image:'',userName:'',userEmail:'',userImage:"",createdAt:Date.now()}}
+                    onSubmit={value=>onSubmitMethod(value)}
+                    validate={(values)=>{
+                        const errors={}
+                        if(!values.title)
+                        {
+                        console.log("title is not present");
+                        //ToastAndroid.show("title must be there", ToastAndroid.SHORT)
+                        errors.name="Title must be there";
                         }
-                        </TouchableOpacity>
-                        <TextInput
-                            style={styles.input}
-                            placeholder='Title'
-                            value={values?.title}
-                            onChangeText={handleChange('title')}
-                        />
-                        <TextInput
-                            style={styles.input}
-                            placeholder='Description'
-                            value={values?.desc}
-                            numberOfLines={5}
-                            onChangeText={handleChange('desc')}
-                        />
-                         <TextInput
-                            style={styles.input}
-                            placeholder='Price'
-                            value={values?.price}
-                            keyboardType='number-pad'
-                            onChangeText={handleChange('price')}
-                        />
-                        <TouchableOpacity onPress={()=>console.log("image click")}>
+                        return errors
+                    }}
+                >
+                    {({handleChange,handleBlur,handleSubmit,values,setFieldValue})=>(
+                        <View>
+                            <TouchableOpacity onPress={pickImage}>
+                            {image?
+                            <Image source={{uri:image}} style={{width:100,height:100,borderRadius:15}} />
+                            :
+                            <Image source={require('./../../assets/images/placeholder.png')} 
+                            style={{width:100,height:100,borderRadius:15}}
+                            />
+                            }
+                            </TouchableOpacity>
                             <TextInput
                                 style={styles.input}
-                                placeholder='Address'
-                                value={values?.address}
-                                onChangeText={handleChange('address')}
+                                placeholder='Title'
+                                value={values?.title}
+                                onChangeText={handleChange('title')}
                             />
-                        </TouchableOpacity>
+                            <TextInput
+                                style={styles.input}
+                                placeholder='Description'
+                                value={values?.desc}
+                                numberOfLines={5}
+                                onChangeText={handleChange('desc')}
+                            />
+                            <TextInput
+                                style={styles.input}
+                                placeholder='Price'
+                                value={values?.price}
+                                keyboardType='number-pad'
+                                onChangeText={handleChange('price')}
+                            />
+                            <TouchableOpacity onPress={()=>console.log("image click")}>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder='Address'
+                                    value={values?.address}
+                                    onChangeText={handleChange('address')}
+                                />
+                            </TouchableOpacity>
 
-                        {/* Category */}
-                        <View style={{borderWidth:1, borderRadius:10,marginTop:15}}>
-                        <Picker
-                            selectedValue={values?.category}
-                            className="border-2"
-                            onValueChange={itemValue=>setFieldValue('category', itemValue)}
-                        >
-                            {categoryList.length>0&&categoryList?.map((item,index)=>(
-                                <Picker.Item key={index}
-                                label={item?.name} value={item?.name} />
-                            ))}
-                        </Picker>
+                            {/* Category */}
+                            <View style={{borderWidth:1, borderRadius:10,marginTop:15}}>
+                            <Picker
+                                selectedValue={values?.category}
+                                className="border-2"
+                                onValueChange={itemValue=>setFieldValue('category', itemValue)}
+                            >
+                                {categoryList.length>0&&categoryList?.map((item,index)=>(
+                                    <Picker.Item key={index}
+                                    label={item?.name} value={item?.name} />
+                                ))}
+                            </Picker>
+                            </View>
+                            <TouchableOpacity onPress={handleSubmit} 
+                                style={{
+                                    backgroundColor:loading?'#ccc':'#007BFF',
+                                }}
+                                disabled={loading}
+                                className="p-4 bg-blue-500 rounded-full mt-10">
+                            {loading?
+                                <ActivityIndicator color='#fff' />
+                                :
+                                <Text className="text-white text-center text-[16px]">Submit</Text>
+                            }
+                            </TouchableOpacity>
                         </View>
-                        <TouchableOpacity onPress={handleSubmit} 
-                            style={{
-                                backgroundColor:loading?'#ccc':'#007BFF',
-                            }}
-                            disabled={loading}
-                            className="p-4 bg-blue-500 rounded-full mt-10">
-                        {loading?
-                            <ActivityIndicator color='#fff' />
-                            :
-                            <Text className="text-white text-center text-[16px]">Submit</Text>
-                        }
-                        </TouchableOpacity>
-                    </View>
-                    
-                )}
-            </Formik>
-        </View>
+                        
+                    )}
+                </Formik>
+            </View>
+        </ScrollView>
+        </KeyboardAvoidingView>
     )
 }
 
