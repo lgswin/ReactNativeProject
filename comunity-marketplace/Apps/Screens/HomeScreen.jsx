@@ -1,5 +1,5 @@
-import { ScrollView, Text, View } from 'react-native'
-import React, { Component, useEffect, useState } from 'react'
+import { FlatList, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import Header from '../../Components/Homescreen/Header'
 import Slider from '../../Components/Homescreen/Slider'
 import {collection, getDocs, getFirestore, orderBy} from 'firebase/firestore';
@@ -50,13 +50,15 @@ const getLatestItemList=async()=>{
 }
 
   return (
-    <View className="py-8 px-6 bg-white flex-1">
-      <ScrollView >
-        <Header />
-        <Slider sliderList={sliderList}/>
-        <Categories categoryList={categoryList}/>
-        <LatestItemList latestItemList={latestItemList}/>
-      </ScrollView>
-    </View>
+    <FlatList
+      ListEmptyComponent={  
+        <View className="py-8 px-6 bg-white flex-1">
+            <Header />
+            <Slider sliderList={sliderList}/>
+            <Categories categoryList={categoryList}/>
+            <LatestItemList latestItemList={latestItemList} heading={'Latest Items'}/>
+        </View>
+      }
+      />
   )
 }

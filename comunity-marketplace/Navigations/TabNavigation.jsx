@@ -9,6 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import HomeScreenStackNav from './HomeScreenStackNav';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,7 +20,7 @@ export default class TabNavigation extends Component {
         headerShown: false,
         
       }}>
-        <Tab.Screen name='home' component={HomeScreen} 
+        <Tab.Screen name='home-nav' component={HomeScreenStackNav} 
             options={{
                 tabBarLabel: ({color})=>(
                     <Text style={{color:color, fontSize:12, marginBottom: 3}}>Home</Text>
