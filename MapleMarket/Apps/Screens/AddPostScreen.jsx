@@ -28,7 +28,7 @@ export default function AddPostScreen() {
         const querySnapshot = await getDocs(collection(db, 'Category'));
 
         querySnapshot.forEach((doc)=> {
-            console.log("Docs:", doc.data());
+            // console.log("Docs:", doc.data());
             setCategoryList(categoryList=>[...categoryList,doc.data()]);
         })
     }
