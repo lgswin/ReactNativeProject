@@ -1,11 +1,18 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { Stack } from 'expo-router'
+import HomeHeader from '../../components/HomeHeader'
 
 export default function _layout() {
+  console.log('here__layout');
   return (
-    <View className="flex-1">
-      <Stack />
-    </View>
+    <Stack>
+      <Stack.Screen
+          name="home"
+          options={{
+            header: () => <HomeHeader />
+          }}
+        />
+    </Stack>
   )
 }
